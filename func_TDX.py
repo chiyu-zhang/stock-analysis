@@ -19,7 +19,7 @@ def rolling_window(a, window):
     return sliding_window_view(a, window_shape=window)
 
 
-def REF(value, day):
+def ref(value, day):
     """
     引用若干周期前的数据。如果传入列表，返回具体数值。如果传入序列，返回序列
     """
@@ -30,7 +30,7 @@ def REF(value, day):
     return result
 
 
-def MA(value, day) -> float:
+def ma(value, day) -> float:
     """
     返回当前周期的简单移动平均值。传入可以是列表或序列类型。传出是当前周期的简单移动平均具体值。
     :rtype: float
@@ -41,7 +41,7 @@ def MA(value, day) -> float:
     return result
 
 
-def SMA(value, day):
+def sma(value, day):
     """
     返回简单移动平均序列。传入可以是列表或序列类型。传出是历史到当前周期为止的简单移动平均序列。
     """
@@ -51,7 +51,7 @@ def SMA(value, day):
     return result
 
 
-def HHV(series, day):
+def hhv(series, day):
     """
     返回最大值
     """
@@ -67,11 +67,11 @@ def HHV(series, day):
         value = value.fillna(method='ffill')  # 向下填充无效值
     else:
         value = series.rolling(day).max()
-        value.iloc[0:day-1] = HHV(series.iloc[0:day-1], 0)
+        value.iloc[0:day-1] = hhv(series.iloc[0:day-1], 0)
     return value
 
 
-def LLV(series, day):
+def llv(series, day):
     """
     返回最小值
     """
@@ -87,11 +87,11 @@ def LLV(series, day):
         value = value.fillna(method='ffill')  # 向下填充无效值
     else:
         value = series.rolling(day).min()
-        value.iloc[0:day - 1] = LLV(series.iloc[0:day - 1], 0)
+        value.iloc[0:day - 1] = llv(series.iloc[0:day - 1], 0)
     return value
 
 
-def COUNT(series, n):
+def count(series, n):
     # rolling方法不行，虽然简单明了但是性能太差
     # result = series.rolling(n) \
     #     .apply(lambda x: x.value_counts().to_dict()[True] if True in x.value_counts().to_dict() else 0)
@@ -105,7 +105,7 @@ def COUNT(series, n):
     return result
 
 
-def EXIST(cond, n):
+def exist(cond, n):
     series = cond[-n:]
     if True in series.to_list():
         return True
@@ -113,14 +113,14 @@ def EXIST(cond, n):
         return False
 
 
-def CROSS(s1, s2):
+def cross(s1, s2):
     cond1 = s1 > s2
     cond2 = s1.shift() <= s2.shift()
     result = cond1 & cond2
     return result
 
 
-def BARSLAST(series):
+def barslast(series):
     # 上一次条件成立到当前的周期数.
     # 用法:
     #  BARSLAST(X):上一次X不为0到现在的天数
@@ -138,7 +138,7 @@ def BARSLAST(series):
     return result
 
 
-def BARSLASTCOUNT(cond):
+def barslastcount(cond):
     # 统计连续满足条件的周期数.
     # 用法:
     #  BARSLASTCOUNT(X),统计连续满足X条件的周期数.
@@ -156,7 +156,7 @@ def BARSLASTCOUNT(cond):
     return result
 
 
-def VALUEWHEN(cond, value_series):
+def valuewhen(cond, value_series):
     result = pd.Series(index=cond.index, dtype=float)
     result.loc[cond.loc[cond==True].keys()] = value_series.loc[cond.loc[cond==True].keys()]
     result = result.fillna(method='ffill')  # 向下填充无效值

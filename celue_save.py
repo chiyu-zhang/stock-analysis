@@ -11,7 +11,7 @@ import pandas as pd
 from tqdm import tqdm
 from rich import print
 
-import CeLue  # 个人策略文件，不分享
+import strategy  # 个人策略文件，不分享
 import func
 import user_config as ucfg
 

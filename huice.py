@@ -9,6 +9,7 @@ import numpy as np
 import user_config as ucfg
 from rqalpha.apis import *
 from rqalpha import run_func
+import rqdatac
 from tqdm import tqdm
 from rich import print as rprint
 
@@ -69,7 +70,7 @@ def handle_bar(context, bar_dict):
             # logger.info(index, row)
 
             # 检测是否停牌，停牌则交易单复制到下一个交易日
-            if is_suspended(row['code']):
+            if rqdatac.is_suspended(row['code']):
                 # print(f"{row['code']} 停牌 跳过")
                 row_new = copy.copy(row)
                 # 获取下一个交易日日期，并赋值。新DF行附加到context.df_celue
